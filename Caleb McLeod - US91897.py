@@ -2,6 +2,7 @@ import tkinter
 from tkinter.ttk import *
 from tkinter import ttk
 import os
+import random
 main_window = tkinter.Tk()
 main_window.title("Julie's Party Hire Store")
 
@@ -9,13 +10,19 @@ def quit():
     main_window.destroy()
 
 def print_details():
+    Label (main_window, text="Customer Name\tItem Hired\tQuantity\t Receipt number").grid(row=6, column=0)
     database = open("Julie's Part Hire Store Database.txt","r")
-    blahblahblah = database.read()
-    print("test")
-    Label (main_window, text= blahblahblah,).grid(row=0, column=1)
+    print_database = database.read()
+    Label (main_window, text= print_database,).grid(row=7, column=0)
 
 def append_details():
-    print("Append")
+    customer_name_data="\n"+str(customer_name_entry.get())
+    item_hired_data="\t"+str(item_hired_combobox.get())
+    item_quantity_data="\t"+str(item_quantity_spinbox.get())
+    receipt_number = "\t"+str(random.randint(1,10000))
+    customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
+    database = open("Julie's Part Hire Store Database.txt","a")
+    database.write(customer_data)
 
 def delete_details():
     print("Delete")
