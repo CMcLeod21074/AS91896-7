@@ -10,16 +10,19 @@ def quit():
     main_window.destroy()
 
 def print_details():
-    Label (main_window, text="Customer Name\tItem Hired\tQuantity\t Receipt number").grid(row=6, column=0)
+    Label (main_window, text="Customer Name\tItem Hired\tQuantity\t Receipt number").grid(row=6, column=1)
     database = open("Julie's Part Hire Store Database.txt","r")
-    print_database = database.read()
-    Label (main_window, text= print_database,).grid(row=7, column=0)
+    database_list = database.read().split(",")
+    row=0
+    for x in database_list:
+        row=row+1
+    Label (main_window, text= database_list[row*4],).grid(row=7, column=1)
 
 def append_details():
-    customer_name_data="\n"+str(customer_name_entry.get())
-    item_hired_data="\t"+str(item_hired_combobox.get())
-    item_quantity_data="\t"+str(item_quantity_spinbox.get())
-    receipt_number = "\t"+str(random.randint(1,10000))
+    customer_name_data=str(customer_name_entry.get())
+    item_hired_data=","+str(item_hired_combobox.get())
+    item_quantity_data=","+str(item_quantity_spinbox.get())
+    receipt_number = ","+str(random.randint(1,10000))+','"\n"
     customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
     database = open("Julie's Part Hire Store Database.txt","a")
     database.write(customer_data)
