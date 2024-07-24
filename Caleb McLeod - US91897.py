@@ -10,12 +10,15 @@ data_window = tkinter.Tk()
 data_window.title("Details")
 data_window.configure(background='#bf80ff')
 
+#Main Window Quit Function
 def quit():
     main_window.destroy()
 
+#Data Window quit Function
 def data_quit():
     data_window.destroy()
 
+#Print details function
 def print_details():
     Label (details_frame, text="Customer Name").grid(row=6, column=0)
     Label (details_frame, text="\t").grid(row=6, column=1)
@@ -26,33 +29,35 @@ def print_details():
     Label (details_frame, text="Receipt number").grid(row=6, column=6)
     database = open("Julie's Part Hire Store Database.txt","r")
     database_list = database.read().split(",")
-    #row=0
-   # label_column=0
-   # while row <4:
-        #Label (details_frame, text= database_list[row]).grid(row=7, column=label_column)
-        #row += 1
-        #label_column=label_column+2
+
+    #Formats Data Labels
     row = 0
     i = 0
     col = 0
-    while row < (len(database_list)-1)/4:
+    while i < len(database_list):
         col = 0
-        while col < 4:
-            #Label (details_frame, text= database_list[i]).grid(row=7+row, column=col)
+        while col < 8 and i < len(database_list):
+            Label (details_frame, text= database_list[i]).grid(row=7+row, column=col)
             print(database_list[i])
             i+=1
-            col+=1
-        row=+1
-        
+            col+=2
+        row+=1
+
+#Append Details Functions        
 def append_details():
     customer_name_data=str(customer_name_entry.get())
     item_hired_data=","+str(item_hired_combobox.get())
+    
     item_quantity_data=","+str(item_quantity_spinbox.get())
-    receipt_number = ","+str(random.randint(1,10000))+','"\n"
+
+
+    
+    receipt_number = ","+str(random.randint(10000,99999))+','"\n"
     customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
     database = open("Julie's Part Hire Store Database.txt","a")
     database.write(customer_data)
-
+    
+    
 def delete_details():
     print("Delete")
     
@@ -72,9 +77,11 @@ def main():
     item_hired.grid(row=1, column=0)
 
     #Item Quantity
+    
     item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#bf80ff')
     item_quantity.grid(row=2, column=0)
 
+    global item_quantity_spinbox
     item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
     item_quantity_spinbox.grid(row=2, column=1)
 
