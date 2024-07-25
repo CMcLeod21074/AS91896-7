@@ -1,32 +1,34 @@
 import tkinter
+from tkinter import *
 from tkinter.ttk import *
 from tkinter import ttk
 import os
 import random
 main_window = tkinter.Tk()
 main_window.title("Julie's Party Hire Store")
-main_window.configure(background='#bf80ff')
-data_window = tkinter.Tk()
-data_window.title("Details")
-data_window.configure(background='#bf80ff')
+main_window.configure(background='#ccf2ff')
+details_window = Toplevel(main_window)
+details_window.title("Details")
+details_window.configure(background='#ccf2ff')
 
 #Main Window Quit Function
 def quit():
     main_window.destroy()
 
-#Data Window quit Function
-def data_quit():
-    data_window.destroy()
-
+#details Window quit Function
+def details_quit():
+    details_window.withdraw()
+    
 #Print details function
 def print_details():
-    Label (details_frame, text="Customer Name").grid(row=6, column=0)
-    Label (details_frame, text="\t").grid(row=6, column=1)
-    Label (details_frame, text="Item Hired").grid(row=6, column=2)
-    Label (details_frame, text="\t").grid(row=6, column=3)
-    Label (details_frame, text="Quantity").grid(row=6, column=4)
-    Label (details_frame, text="\t").grid(row=6, column=5)
-    Label (details_frame, text="Receipt number").grid(row=6, column=6)
+    details_window.deiconify()
+    tkinter.Label(details_frame, text="Customer Name", bg="#ccf2ff").grid(row=6, column=0)
+    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=1)
+    tkinter.Label (details_frame, text="Item Hired", bg="#ccf2ff").grid(row=6, column=2)
+    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=3)
+    tkinter.Label (details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
+    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
+    tkinter.Label (details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
     database = open("Julie's Part Hire Store Database.txt","r")
     database_list = database.read().split(",")
 
@@ -37,8 +39,7 @@ def print_details():
     while i < len(database_list):
         col = 0
         while col < 8 and i < len(database_list):
-            Label (details_frame, text= database_list[i]).grid(row=7+row, column=col)
-            print(database_list[i])
+            tkinter.Label (details_frame, text= database_list[i], bg="#ccf2ff").grid(row=7+row, column=col)
             i+=1
             col+=2
         row+=1
@@ -64,58 +65,65 @@ def delete_details():
 def main():
     database = open("Julie's Part Hire Store Database.txt","a")
     database.close()
+
+    details_window.withdraw()
+    
+    #Main Window Quit Button
     Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
 
-    Button(data_window, text="Quit", command=data_quit).grid(column=0, row=0)
+    #Details Window Quit Button
+    Button(details_window, text="Quit", command=details_quit).grid(column=0, row=0)
+
     
     #Customer name input
-    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#bf80ff', font='arial')
+    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='arial')
     customer_name.grid(row=0, column=0)
 
     #Item hired input
-    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#bf80ff')
+    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#ccf2ff')
     item_hired.grid(row=1, column=0)
 
     #Item Quantity
     
-    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#bf80ff')
+    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff')
     item_quantity.grid(row=2, column=0)
 
     global item_quantity_spinbox
     item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
     item_quantity_spinbox.grid(row=2, column=1)
 
-    #Buttons
+    #Print Button
     Button(append_print_frame, text="Print", command=print_details).grid(column=2, row=5)
+
+    #Append Button
     Button(append_print_frame, text="Append", command=append_details).grid(column=1, row=5)
 
     #Delete Frame
-    delete_frame = tkinter.LabelFrame(frame,bg='#bf80ff', text="Delete Details")
+    delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details")
     delete_frame.grid(row=1, column=2)
     
-    delete_item = tkinter.Label(delete_frame, text="Row Number",bg='#bf80ff')
+    delete_item = tkinter.Label(delete_frame, text="Row Number",bg='#ccf2ff')
     delete_item.grid(row=0, column=0)
 
     delete_item_entry = tkinter.Entry(delete_frame)
     delete_item_entry.grid(row=0, column=1)
 
-    #Button
+    #Delete Button
     Button(delete_frame, text="Delete", command=delete_details).grid(column=2, row=5)
 
-    data_window.mainloop()
     main_window.mainloop()
     
 
 
-frame = tkinter.Frame(main_window,bg='#bf80ff')
+frame = tkinter.Frame(main_window,bg='#ccf2ff')
 frame.grid(row=1, column=1)
 
 #Details Frame
-details_frame = tkinter.LabelFrame(data_window,bg='#bf80ff', text="Details")
+details_frame = tkinter.LabelFrame(details_window,bg='#ccf2ff', text="Details")
 details_frame.grid(row=2, column=1)
 
 #Append/Print Frame
-append_print_frame = tkinter.LabelFrame(frame,bg='#bf80ff', text="Append/Print Details")
+append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Print Details")
 append_print_frame.grid(row=1, column=1)
 
 customer_name_entry = tkinter.Entry(append_print_frame)
