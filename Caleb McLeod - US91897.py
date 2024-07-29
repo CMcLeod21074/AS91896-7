@@ -29,7 +29,7 @@ def print_details():
     tkinter.Label (details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
     tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
     tkinter.Label (details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
-    database = open("Julie's Part Hire Store Database.txt","r")
+    database = open("Julie's Party Hire Store Database.txt","r")
     database_list = database.read().split(",")
 
     #Formats Data Labels
@@ -46,24 +46,33 @@ def print_details():
 
 #Append Details Functions        
 def append_details():
+    #Receipt Number
+    global receipt_no
+    customer_receipt = customer_name_entry.get()
+    receipt_no = random.randint(100,9999) * ord(customer_receipt[0])
+
+    #Appends Details
     customer_name_data=str(customer_name_entry.get())
     item_hired_data=","+str(item_hired_combobox.get())
     
     item_quantity_data=","+str(item_quantity_spinbox.get())
-
-
     
-    receipt_number = ","+str(random.randint(10000,99999))+','"\n"
+    receipt_number = ","+str(receipt_no)+','"\n"
     customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
-    database = open("Julie's Part Hire Store Database.txt","a")
+    database = open("Julie's Party Hire Store Database.txt","a")
     database.write(customer_data)
     
+   
     
 def delete_details():
+    database = open("Julie's Party Hire Store Database.txt","r")
+    database.read()
+    temp_data = open("Temp.txt","w")
+    temp_data.write(database)
     print("Delete")
     
 def main():
-    database = open("Julie's Part Hire Store Database.txt","a")
+    database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
 
     details_window.withdraw()
@@ -84,7 +93,6 @@ def main():
     item_hired.grid(row=1, column=0)
 
     #Item Quantity
-    
     item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff')
     item_quantity.grid(row=2, column=0)
 
@@ -102,7 +110,7 @@ def main():
     delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details")
     delete_frame.grid(row=1, column=2)
     
-    delete_item = tkinter.Label(delete_frame, text="Row Number",bg='#ccf2ff')
+    delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff')
     delete_item.grid(row=0, column=0)
 
     delete_item_entry = tkinter.Entry(delete_frame)
@@ -111,6 +119,7 @@ def main():
     #Delete Button
     Button(delete_frame, text="Delete", command=delete_details).grid(column=2, row=5)
 
+    
     main_window.mainloop()
     
 
