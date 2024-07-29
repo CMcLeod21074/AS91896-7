@@ -29,9 +29,12 @@ def print_details():
     tkinter.Label (details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
     tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
     tkinter.Label (details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
+    
     database = open("Julie's Party Hire Store Database.txt","r")
     database_list = database.read().split(",")
-
+    print(database_list)
+    database.close()
+    
     #Formats Data Labels
     row = 0
     i = 0
@@ -61,15 +64,27 @@ def append_details():
     customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
     database = open("Julie's Party Hire Store Database.txt","a")
     database.write(customer_data)
-    
+    database.close()
    
     
 def delete_details():
+    delete_receipt = delete_item_entry.get()
     database = open("Julie's Party Hire Store Database.txt","r")
-    database.read()
     temp_data = open("Temp.txt","w")
-    temp_data.write(database)
-    print("Delete")
+    for line in database:
+        database_list = line.split(",")
+        if database_list[3] != delete_receipt:
+            temp_data.write(line)
+            print(database_list)
+    database.close()
+    temp_data.close()
+
+    database = open("Julie's Party Hire Store Database.txt","w")
+    temp_data = open("Temp.txt","r")
+    
+    database.write(temp_data.read())
+    database.close()
+    temp_data.close()
     
 def main():
     database = open("Julie's Party Hire Store Database.txt","a")
@@ -113,6 +128,7 @@ def main():
     delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff')
     delete_item.grid(row=0, column=0)
 
+    global delete_item_entry
     delete_item_entry = tkinter.Entry(delete_frame)
     delete_item_entry.grid(row=0, column=1)
 
