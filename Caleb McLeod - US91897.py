@@ -2,12 +2,14 @@ import tkinter
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import ttk
+import tkinter as tk
 import os
 import random
-main_window = tkinter.Tk()
+main_window = tk.Tk()
 main_window.title("Julie's Party Hire Store")
 main_window.configure(background='#ccf2ff')
-details_window = Toplevel(main_window)
+
+details_window =tk.Toplevel(main_window)
 details_window.title("Details")
 details_window.configure(background='#ccf2ff')
 
@@ -21,31 +23,44 @@ def details_quit():
     
 #Print details function
 def print_details():
-    details_window.deiconify()
+    for widget in details_frame.grid_slaves():
+        widget.grid_forget() #Hides widget
+        
     tkinter.Label(details_frame, text="Customer Name", bg="#ccf2ff").grid(row=6, column=0)
-    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=1)
-    tkinter.Label (details_frame, text="Item Hired", bg="#ccf2ff").grid(row=6, column=2)
-    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=3)
-    tkinter.Label (details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
-    tkinter.Label (details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
-    tkinter.Label (details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
+    tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=1)
+    tkinter.Label(details_frame, text="Item Hired", bg="#ccf2ff").grid(row=6, column=2)
+    tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=3)
+    tkinter.Label(details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
+    tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
+    tkinter.Label(details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
+
+    try:
+        with open("Julie's Party Hire Store Database.txt","r") as database:# With opens and closes file
+            database_list = database.read().split(",")
+            
+        row = 1
+        for entry in database_list:
+            if len (database_list) ==4:
+                tkinter.Label(details_frame, text=database_list[0], bg="#ccf2ff").grid(row=row, column=0)
+                tkinter.Label(details_frame, text=database_list[1], bg="#ccf2ff").grid(row=row, column=1)
+                tkinter.Label(details_frame, text=database_list[2], bg="#ccf2ff").grid(row=row, column=2)
+                tkinter.Label(details_frame, text=database_list[3], bg="#ccf2ff").grid(row=row, column=3)
+                row +=1
+
+    except:
+        print ("No data to display")
+
     
-    database = open("Julie's Party Hire Store Database.txt","r")
-    database_list = database.read().split(",")
-    print(database_list)
-    database.close()
-    
-    #Formats Data Labels
-    row = 0
-    i = 0
-    col = 0
-    while i < len(database_list):
+      #  row = 0
+       # i = 0
+     #   col = 0
+    #while i < len(database_list):
         col = 0
-        while col < 8 and i < len(database_list):
-            tkinter.Label (details_frame, text= database_list[i], bg="#ccf2ff").grid(row=7+row, column=col)
-            i+=1
-            col+=2
-        row+=1
+       ## while col < 8 and i < len(database_list):
+            #tkinter.Label (details_frame, text= database_list[i], bg="#ccf2ff").grid(row=7+row, column=col)
+        #    i+=1
+         #   col+=2
+      #  row+=1
 
 #Append Details Functions        
 def append_details():
@@ -85,12 +100,12 @@ def delete_details():
     database.write(temp_data.read())
     database.close()
     temp_data.close()
-    
+    print_details()
 def main():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
 
-    details_window.withdraw()
+    #details_window.withdraw()
     
     #Main Window Quit Button
     Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
