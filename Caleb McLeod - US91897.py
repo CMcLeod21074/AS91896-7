@@ -2,14 +2,15 @@ import tkinter
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import ttk
-import tkinter as tk
+from tkinter import messagebox
+from tkinter.messagebox import askyesno
 import os
 import random
-main_window = tk.Tk()
+main_window = tkinter.Tk()
 main_window.title("Julie's Party Hire Store")
 main_window.configure(background='#ccf2ff')
 
-details_window =tk.Toplevel(main_window)
+details_window =tkinter.Toplevel(main_window)
 details_window.title("Details")
 details_window.configure(background='#ccf2ff')
 
@@ -36,51 +37,75 @@ def print_details():
 
     try:
         with open("Julie's Party Hire Store Database.txt","r") as database:# With opens and closes file
-            database_list = database.read().split(",")
+            database_list = database.read().strip().split("\n")
             
-        row = 1
+        row = 17
         for entry in database_list:
-            if len (database_list) ==4:
-                tkinter.Label(details_frame, text=database_list[0], bg="#ccf2ff").grid(row=row, column=0)
-                tkinter.Label(details_frame, text=database_list[1], bg="#ccf2ff").grid(row=row, column=1)
-                tkinter.Label(details_frame, text=database_list[2], bg="#ccf2ff").grid(row=row, column=2)
-                tkinter.Label(details_frame, text=database_list[3], bg="#ccf2ff").grid(row=row, column=3)
+            data = entry.split(",")
+            if len (data) ==5:
+                tkinter.Label(details_frame, text=data[0], bg="#ccf2ff").grid(row=row, column=0)
+                tkinter.Label(details_frame, text=data[1], bg="#ccf2ff").grid(row=row, column=2)
+                tkinter.Label(details_frame, text=data[2], bg="#ccf2ff").grid(row=row, column=4)
+                tkinter.Label(details_frame, text=data[3], bg="#ccf2ff").grid(row=row, column=6)
                 row +=1
 
-    except:
-        print ("No data to display")
+    except FileNotFoundError:
+        print ("File not found")
 
-    
-      #  row = 0
-       # i = 0
-     #   col = 0
-    #while i < len(database_list):
-        col = 0
-       ## while col < 8 and i < len(database_list):
-            #tkinter.Label (details_frame, text= database_list[i], bg="#ccf2ff").grid(row=7+row, column=col)
-        #    i+=1
-         #   col+=2
-      #  row+=1
+
+#User Input Validation Function
+def append_validation():
+    #Name Validation
+    CustomerName_TempOne = customer_name_entry.get().strip()
+    CustomerName_TempTwo = CustomerName_TempOne.replace(" ", "")
+    customer_name_check = CustomerName_TempTwo.isalpha()
+
+    if customer_name_check == False:
+        messagebox.showerror(title="Error", message="Please enter only characters in the name field")
+        
+ #   elif item_hired_data != "Item 1" or "Item 2" or "Item 3":
+        #messagebox.showerror(title="Error", message="Please select an item")
+       
+
+    else:
+        confirm_append()
+        
+def delete_validation():
+    delete_receipt = delete_item_entry.get()
+    database = open("Julie's Party Hire Store Database.txt","r")
+    for line in database:
+        database_list = line.split(",")
+        if database_list[3] != delete_receipt:
+            messagebox.showerror(title="Error", message="Receipt Number does not match")
+        else:
+            confirm_delete()
+#Append Confirmation Function
+def confirm_append():
+   confirm_append = askyesno(title="Append Confirmation", message="Do you want to append this information?")
+   if confirm_append == True:
+       append_details()
 
 #Append Details Functions        
 def append_details():
+    
     #Receipt Number
     global receipt_no
     customer_receipt = customer_name_entry.get()
     receipt_no = random.randint(100,9999) * ord(customer_receipt[0])
-
     #Appends Details
     customer_name_data=str(customer_name_entry.get())
     item_hired_data=","+str(item_hired_combobox.get())
-    
     item_quantity_data=","+str(item_quantity_spinbox.get())
-    
     receipt_number = ","+str(receipt_no)+','"\n"
     customer_data=(customer_name_data+item_hired_data+item_quantity_data+receipt_number)
     database = open("Julie's Party Hire Store Database.txt","a")
     database.write(customer_data)
     database.close()
-   
+    
+def confirm_delete():
+    confirm_delete = askyesno(title="Delete Confirmation", message="Do you want to delete this information? (This action cannot be undone)")
+    if confirm_delete == True:
+        delete_details()
     
 def delete_details():
     delete_receipt = delete_item_entry.get()
@@ -90,7 +115,6 @@ def delete_details():
         database_list = line.split(",")
         if database_list[3] != delete_receipt:
             temp_data.write(line)
-            print(database_list)
     database.close()
     temp_data.close()
 
@@ -110,10 +134,6 @@ def main():
     #Main Window Quit Button
     Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
 
-    #Details Window Quit Button
-    Button(details_window, text="Quit", command=details_quit).grid(column=0, row=0)
-
-    
     #Customer name input
     customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='arial')
     customer_name.grid(row=0, column=0)
@@ -134,7 +154,7 @@ def main():
     Button(append_print_frame, text="Print", command=print_details).grid(column=2, row=5)
 
     #Append Button
-    Button(append_print_frame, text="Append", command=append_details).grid(column=1, row=5)
+    Button(append_print_frame, text="Append", command=append_validation).grid(column=1, row=5)
 
     #Delete Frame
     delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details")
@@ -148,7 +168,7 @@ def main():
     delete_item_entry.grid(row=0, column=1)
 
     #Delete Button
-    Button(delete_frame, text="Delete", command=delete_details).grid(column=2, row=5)
+    Button(delete_frame, text="Delete", command=delete_validation).grid(column=2, row=5)
 
     
     main_window.mainloop()
@@ -166,12 +186,16 @@ details_frame.grid(row=2, column=1)
 append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Print Details")
 append_print_frame.grid(row=1, column=1)
 
+#Customer Name Entry
 customer_name_entry = tkinter.Entry(append_print_frame)
 customer_name_entry.grid(row=0, column=1)
 
+#Item Hired Combobox
 item_hired_combobox = ttk.Combobox(append_print_frame, values=["Item 1","Item 2","Item 3"], state="readonly")
 item_hired_combobox.grid(row=1, column =1)
 
+#Item Quantity Spinbox
 item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
 item_quantity_spinbox.grid(row=2, column=1)
+
 main()
