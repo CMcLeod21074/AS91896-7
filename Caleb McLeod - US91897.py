@@ -23,7 +23,7 @@ def details_quit():
     details_window.withdraw()
     
 #Print details function
-def print_details():
+def display_details():
     for widget in details_frame.grid_slaves():
         widget.grid_forget() #Hides widget
         
@@ -59,26 +59,41 @@ def append_validation():
     CustomerName_TempOne = customer_name_entry.get().strip()
     CustomerName_TempTwo = CustomerName_TempOne.replace(" ", "")
     customer_name_check = CustomerName_TempTwo.isalpha()
-
+    ItemQuantity_TempOne = item_quantity_spinbox.get().strip()
+    item_quantity_check = ItemQuantity_TempOne.isdigit()
+    #print(item_quantity_check)
+    
     if customer_name_check == False:
         messagebox.showerror(title="Error", message="Please enter only characters in the name field")
         
- #   elif item_hired_data != "Item 1" or "Item 2" or "Item 3":
-        #messagebox.showerror(title="Error", message="Please select an item")
-       
+    elif item_quantity_check == False:
+        messagebox.showerror(title="Error", message="Item quantity must only contain digits and be between 1-500")
+
+    elif item_quantity_check == True:
+        item_quantity_temp = int(item_quantity_spinbox.get())
+        if not item_quantity_temp <=500 or not item_quantity_temp >=1:
+            messagebox.showerror(title="Error", message="Item quantity must only contain digits and be between 1-500")
+        else:
+            confirm_append()
 
     else:
         confirm_append()
         
 def delete_validation():
+    receipt_error = 0
     delete_receipt = delete_item_entry.get()
     database = open("Julie's Party Hire Store Database.txt","r")
     for line in database:
         database_list = line.split(",")
         if database_list[3] != delete_receipt:
-            messagebox.showerror(title="Error", message="Receipt Number does not match")
+            receipt_error = True
+    
         else:
             confirm_delete()
+            
+    if receipt_error == True:
+        messagebox.showerror(title="Error", message="No data found matching that receipt number")
+        
 #Append Confirmation Function
 def confirm_append():
    confirm_append = askyesno(title="Append Confirmation", message="Do you want to append this information?")
@@ -124,7 +139,7 @@ def delete_details():
     database.write(temp_data.read())
     database.close()
     temp_data.close()
-    print_details()
+    display_details()
 def main():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
@@ -150,8 +165,8 @@ def main():
     item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
     item_quantity_spinbox.grid(row=2, column=1)
 
-    #Print Button
-    Button(append_print_frame, text="Print", command=print_details).grid(column=2, row=5)
+    #Display Button
+    Button(append_print_frame, text="Display", command=display_details).grid(column=2, row=5)
 
     #Append Button
     Button(append_print_frame, text="Append", command=append_validation).grid(column=1, row=5)
