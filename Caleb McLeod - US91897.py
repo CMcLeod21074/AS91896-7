@@ -27,13 +27,13 @@ def display_details():
     for widget in details_frame.grid_slaves():
         widget.grid_forget() #Hides widget
         
-    tkinter.Label(details_frame, text="Customer Name", bg="#ccf2ff").grid(row=6, column=0)
+    tkinter.Label(details_frame, text="Customer Name", bg="#ccf2ff", font='courier').grid(row=6, column=0)
     tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=1)
-    tkinter.Label(details_frame, text="Item Hired", bg="#ccf2ff").grid(row=6, column=2)
+    tkinter.Label(details_frame, text="Item Hired", bg="#ccf2ff", font='courier').grid(row=6, column=2)
     tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=3)
-    tkinter.Label(details_frame, text="Quantity", bg="#ccf2ff").grid(row=6, column=4)
+    tkinter.Label(details_frame, text="Quantity", bg="#ccf2ff", font='courier').grid(row=6, column=4)
     tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=5)
-    tkinter.Label(details_frame, text="Receipt number", bg="#ccf2ff").grid(row=6, column=6)
+    tkinter.Label(details_frame, text="Receipt number", bg="#ccf2ff", font='courier').grid(row=6, column=6)
 
     try:
         with open("Julie's Party Hire Store Database.txt","r") as database:# With opens and closes file
@@ -59,13 +59,23 @@ def append_validation():
     CustomerName_TempOne = customer_name_entry.get().strip()
     CustomerName_TempTwo = CustomerName_TempOne.replace(" ", "")
     customer_name_check = CustomerName_TempTwo.isalpha()
+
+    #Item Validation
+    item_check = item_hired_combobox.get()
+    
+    #Quantity Validation
     ItemQuantity_TempOne = item_quantity_spinbox.get().strip()
     item_quantity_check = ItemQuantity_TempOne.isdigit()
-    #print(item_quantity_check)
-    
+
+    #Name Validation
     if customer_name_check == False:
         messagebox.showerror(title="Error", message="Please enter only characters in the name field")
-        
+
+    #Item Validation
+    elif len(item_check) == 0:
+         messagebox.showerror(title="Error", message="Please select an item")
+
+    #Quantity Validation    
     elif item_quantity_check == False:
         messagebox.showerror(title="Error", message="Item quantity must only contain digits and be between 1-500")
 
@@ -89,7 +99,9 @@ def delete_validation():
             receipt_error = True
     
         else:
+            receipt_error = False
             confirm_delete()
+            break
             
     if receipt_error == True:
         messagebox.showerror(title="Error", message="No data found matching that receipt number")
@@ -116,6 +128,7 @@ def append_details():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.write(customer_data)
     database.close()
+
     
 def confirm_delete():
     confirm_delete = askyesno(title="Delete Confirmation", message="Do you want to delete this information? (This action cannot be undone)")
@@ -140,6 +153,7 @@ def delete_details():
     database.close()
     temp_data.close()
     display_details()
+    
 def main():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
@@ -149,16 +163,16 @@ def main():
     #Main Window Quit Button
     Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
 
-    #Customer name input
-    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='arial')
+    #Customer name
+    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='courier')
     customer_name.grid(row=0, column=0)
 
-    #Item hired input
-    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#ccf2ff')
+    #Item hired
+    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#ccf2ff', font='courier')
     item_hired.grid(row=1, column=0)
 
     #Item Quantity
-    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff')
+    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff', font='courier')
     item_quantity.grid(row=2, column=0)
 
     global item_quantity_spinbox
@@ -172,10 +186,10 @@ def main():
     Button(append_print_frame, text="Append", command=append_validation).grid(column=1, row=5)
 
     #Delete Frame
-    delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details")
+    delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details", font='courier')
     delete_frame.grid(row=1, column=2)
     
-    delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff')
+    delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff', font='courier')
     delete_item.grid(row=0, column=0)
 
     global delete_item_entry
@@ -194,11 +208,11 @@ frame = tkinter.Frame(main_window,bg='#ccf2ff')
 frame.grid(row=1, column=1)
 
 #Details Frame
-details_frame = tkinter.LabelFrame(details_window,bg='#ccf2ff', text="Details")
+details_frame = tkinter.LabelFrame(details_window,bg='#ccf2ff', text="Details", font='courier')
 details_frame.grid(row=2, column=1)
 
 #Append/Print Frame
-append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Print Details")
+append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Display Details", font='courier')
 append_print_frame.grid(row=1, column=1)
 
 #Customer Name Entry
@@ -206,7 +220,8 @@ customer_name_entry = tkinter.Entry(append_print_frame)
 customer_name_entry.grid(row=0, column=1)
 
 #Item Hired Combobox
-item_hired_combobox = ttk.Combobox(append_print_frame, values=["Item 1","Item 2","Item 3"], state="readonly")
+global item_hired_combobox
+item_hired_combobox = ttk.Combobox(append_print_frame, values=["Tables","Chairs","Bouncy Castles"], state="readonly")
 item_hired_combobox.grid(row=1, column =1)
 
 #Item Quantity Spinbox
