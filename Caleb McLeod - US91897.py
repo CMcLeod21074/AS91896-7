@@ -73,7 +73,7 @@ def append_validation():
 
     #Item Validation
     elif len(item_check) == 0:
-         messagebox.showerror(title="Error", message="Please select an item")
+        messagebox.showerror(title="Error", message="Please select an item")
 
     #Quantity Validation    
     elif item_quantity_check == False:
@@ -119,6 +119,7 @@ def append_details():
     global receipt_no
     customer_receipt = customer_name_entry.get()
     receipt_no = random.randint(100,9999) * ord(customer_receipt[0])
+
     #Appends Details
     customer_name_data=str(customer_name_entry.get())
     item_hired_data=","+str(item_hired_combobox.get())
@@ -158,7 +159,10 @@ def main():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
 
-    #details_window.withdraw()
+    #Image
+    icon = tkinter.PhotoImage(file="icon1.png")
+    icon_label = tkinter.Label(append_print_frame,image=icon, bg="#ccf2ff")
+    icon_label.grid()
     
     #Main Window Quit Button
     Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
@@ -221,7 +225,7 @@ customer_name_entry.grid(row=0, column=1)
 
 #Item Hired Combobox
 global item_hired_combobox
-item_hired_combobox = ttk.Combobox(append_print_frame, values=["Tables","Chairs","Bouncy Castles"], state="readonly")
+item_hired_combobox = ttk.Combobox(append_print_frame, values=["Table(s)","Chair(s)","Bouncy Castle(s)"], state="readonly")
 item_hired_combobox.grid(row=1, column =1)
 
 #Item Quantity Spinbox
