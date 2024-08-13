@@ -69,7 +69,7 @@ def append_validation():
 
     #Name Validation
     if customer_name_check == False:
-        messagebox.showerror(title="Error", message="Please enter only characters in the name field")
+        messagebox.showerror(title="Error", message="Please enter only text in the name field")
 
     #Item Validation
     elif len(item_check) == 0:
@@ -77,12 +77,12 @@ def append_validation():
 
     #Quantity Validation    
     elif item_quantity_check == False:
-        messagebox.showerror(title="Error", message="Item quantity must only contain digits and be between 1-500")
+        messagebox.showerror(title="Error", message="Item quantity must only contain integers and be between 1-500")
 
     elif item_quantity_check == True:
         item_quantity_temp = int(item_quantity_spinbox.get())
         if not item_quantity_temp <=500 or not item_quantity_temp >=1:
-            messagebox.showerror(title="Error", message="Item quantity must only contain digits and be between 1-500")
+            messagebox.showerror(title="Error", message="Item quantity must only contain integers and be between 1-500")
         else:
             confirm_append()
 
