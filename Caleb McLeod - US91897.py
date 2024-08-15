@@ -1,3 +1,8 @@
+#Author: Caleb McLeod
+#Date: 16/08/24
+#Purpose: Allows hire and return items from a store
+#------------------------
+
 import tkinter
 from tkinter import *
 from tkinter.ttk import *
@@ -14,18 +19,18 @@ details_window =tkinter.Toplevel(main_window)
 details_window.title("Details")
 details_window.configure(background='#ccf2ff')
 
-#Main Window Quit Function
-def quit():
+
+def quit(): # Main Window Quit Function.
     main_window.destroy()
 
-#details Window quit Function
-def details_quit():
+
+def details_quit(): # Details Window quit Function.
     details_window.withdraw()
     
-#Print details function
-def display_details():
+
+def display_details(): # Print details function.
     for widget in details_frame.grid_slaves():
-        widget.grid_forget() #Hides widget
+        widget.grid_forget() # Hides widget.
         
     tkinter.Label(details_frame, text="Customer Name", bg="#ccf2ff", font='courier').grid(row=6, column=0)
     tkinter.Label(details_frame, text="\t", bg="#ccf2ff").grid(row=6, column=1)
@@ -36,7 +41,7 @@ def display_details():
     tkinter.Label(details_frame, text="Receipt number", bg="#ccf2ff", font='courier').grid(row=6, column=6)
 
     try:
-        with open("Julie's Party Hire Store Database.txt","r") as database:# With opens and closes file
+        with open("Julie's Party Hire Store Database.txt","r") as database:# With opens and closes file.
             database_list = database.read().strip().split("\n")
             
         row = 17
@@ -53,30 +58,24 @@ def display_details():
         print ("File not found")
 
 
-#User Input Validation Function
-def append_validation():
-    #Name Validation
-    CustomerName_TempOne = customer_name_entry.get().strip()
+
+def append_validation():# User Input Validation Function.
+    CustomerName_TempOne = customer_name_entry.get().strip()# Name validation.
     CustomerName_TempTwo = CustomerName_TempOne.replace(" ", "")
     customer_name_check = CustomerName_TempTwo.isalpha()
-
-    #Item Validation
-    item_check = item_hired_combobox.get()
+ 
+    item_check = item_hired_combobox.get()# Item validation.
     
-    #Quantity Validation
-    ItemQuantity_TempOne = item_quantity_spinbox.get().strip()
+    ItemQuantity_TempOne = item_quantity_spinbox.get().strip()# Quantity validation.
     item_quantity_check = ItemQuantity_TempOne.isdigit()
 
-    #Name Validation
-    if customer_name_check == False:
+    if customer_name_check == False: # Name validation.
         messagebox.showerror(title="Error", message="Please enter only text in the name field")
 
-    #Item Validation
-    elif len(item_check) == 0:
+    elif len(item_check) == 0:# Item Validation.
         messagebox.showerror(title="Error", message="Please select an item")
-
-    #Quantity Validation    
-    elif item_quantity_check == False:
+ 
+    elif item_quantity_check == False:# Quantity validation.
         messagebox.showerror(title="Error", message="Item quantity must only contain integers and be between 1-500")
 
     elif item_quantity_check == True:
@@ -89,7 +88,7 @@ def append_validation():
     else:
         confirm_append()
         
-def delete_validation():
+def delete_validation():# Delete validation.
     receipt_error = 0
     delete_receipt = delete_item_entry.get()
     database = open("Julie's Party Hire Store Database.txt","r")
@@ -106,22 +105,20 @@ def delete_validation():
     if receipt_error == True:
         messagebox.showerror(title="Error", message="No data found matching that receipt number")
         
-#Append Confirmation Function
-def confirm_append():
+
+def confirm_append():# Append Confirmation Function.
    confirm_append = askyesno(title="Append Confirmation", message="Do you want to append this information?")
    if confirm_append == True:
        append_details()
 
-#Append Details Functions        
-def append_details():
-    
-    #Receipt Number
-    global receipt_no
+       
+def append_details():# Append Details Function.
+    global receipt_no# Receipt Number.
     customer_receipt = customer_name_entry.get()
-    receipt_no = random.randint(100,9999) * ord(customer_receipt[0])
+    receipt_no = random.randint(100,9999)* ord(customer_receipt[0])
 
-    #Appends Details
-    customer_name_data=str(customer_name_entry.get())
+    
+    customer_name_data=str(customer_name_entry.get())# Appends Details.
     item_hired_data=","+str(item_hired_combobox.get())
     item_quantity_data=","+str(item_quantity_spinbox.get())
     receipt_number = ","+str(receipt_no)+','"\n"
@@ -159,16 +156,17 @@ def main():
     database = open("Julie's Party Hire Store Database.txt","a")
     database.close()
 
-    #Image
-    icon = tkinter.PhotoImage(file="icon1.png")
+
+
+    icon = tkinter.PhotoImage(file="icon1.png")# Image.
     icon_label = tkinter.Label(append_print_frame,image=icon, bg="#ccf2ff")
     icon_label.grid()
     
-    #Main Window Quit Button
-    Button(main_window, text="Quit", command=quit).grid(column=0, row=0)
+    
+    Button(main_window, text="Quit", command=quit).grid(column=0, row=0)# Main Window Quit Button.
 
-    #Customer name
-    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='courier')
+    
+    customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='courier')# Customer name.
     customer_name.grid(row=0, column=0)
 
     #Item hired
