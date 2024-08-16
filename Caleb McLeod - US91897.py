@@ -1,6 +1,6 @@
 #Author: Caleb McLeod
 #Date: 16/08/24
-#Purpose: Allows hire and return items from a store
+#Purpose: To allow the user to hire and return items from a store
 #------------------------
 
 import tkinter
@@ -11,11 +11,11 @@ from tkinter import messagebox
 from tkinter.messagebox import askyesno
 import os
 import random
-main_window = tkinter.Tk()
+main_window = tkinter.Tk() # Creating the main Window.
 main_window.title("Julie's Party Hire Store")
 main_window.configure(background='#ccf2ff')
 
-details_window =tkinter.Toplevel(main_window)
+details_window =tkinter.Toplevel(main_window) # Creating the details Window.
 details_window.title("Details")
 details_window.configure(background='#ccf2ff')
 
@@ -169,37 +169,37 @@ def main():
     customer_name = tkinter.Label(append_print_frame, text="Customer Name",bg='#ccf2ff', font='courier')# Customer name.
     customer_name.grid(row=0, column=0)
 
-    #Item hired
-    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#ccf2ff', font='courier')
+    
+    item_hired = tkinter.Label(append_print_frame, text="Item Hired",bg='#ccf2ff', font='courier')# Item hired.
     item_hired.grid(row=1, column=0)
 
-    #Item Quantity
-    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff', font='courier')
+    
+    item_quantity = tkinter.Label(append_print_frame, text="Item Quantity",bg='#ccf2ff', font='courier')# Item Quantity.
     item_quantity.grid(row=2, column=0)
 
     global item_quantity_spinbox
     item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
     item_quantity_spinbox.grid(row=2, column=1)
 
-    #Display Button
-    Button(append_print_frame, text="Display", command=display_details).grid(column=2, row=5)
+    
+    Button(append_print_frame, text="Display", command=display_details).grid(column=2, row=5)# Display Button.
 
-    #Append Button
-    Button(append_print_frame, text="Append", command=append_validation).grid(column=1, row=5)
+    
+    Button(append_print_frame, text="Append", command=append_validation).grid(column=1, row=5)# Append Button.
 
-    #Delete Frame
-    delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details", font='courier')
+    
+    delete_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Delete Details", font='courier')# Delete Frame.
     delete_frame.grid(row=1, column=2)
     
-    delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff', font='courier')
+    delete_item = tkinter.Label(delete_frame, text="Receipt Number",bg='#ccf2ff', font='courier')# Receipt Number to delete.
     delete_item.grid(row=0, column=0)
 
     global delete_item_entry
     delete_item_entry = tkinter.Entry(delete_frame)
     delete_item_entry.grid(row=0, column=1)
 
-    #Delete Button
-    Button(delete_frame, text="Delete", command=delete_validation).grid(column=2, row=5)
+    
+    Button(delete_frame, text="Delete", command=delete_validation).grid(column=2, row=5)# Delete Button.
 
     
     main_window.mainloop()
@@ -209,25 +209,25 @@ def main():
 frame = tkinter.Frame(main_window,bg='#ccf2ff')
 frame.grid(row=1, column=1)
 
-#Details Frame
-details_frame = tkinter.LabelFrame(details_window,bg='#ccf2ff', text="Details", font='courier')
+
+details_frame = tkinter.LabelFrame(details_window,bg='#ccf2ff', text="Details", font='courier')# Details Frame.
 details_frame.grid(row=2, column=1)
 
-#Append/Print Frame
-append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Display Details", font='courier')
+
+append_print_frame = tkinter.LabelFrame(frame,bg='#ccf2ff', text="Append/Display Details", font='courier')# Append/Print Frame.
 append_print_frame.grid(row=1, column=1)
 
-#Customer Name Entry
-customer_name_entry = tkinter.Entry(append_print_frame)
+
+customer_name_entry = tkinter.Entry(append_print_frame)# Customer Name Entry.
 customer_name_entry.grid(row=0, column=1)
 
-#Item Hired Combobox
+
 global item_hired_combobox
-item_hired_combobox = ttk.Combobox(append_print_frame, values=["Table(s)","Chair(s)","Bouncy Castle(s)"], state="readonly")
+item_hired_combobox = ttk.Combobox(append_print_frame, values=["Table(s)","Chair(s)","Bouncy Castle(s)"], state="readonly")# Item Hired Combobox.
 item_hired_combobox.grid(row=1, column =1)
 
-#Item Quantity Spinbox
-item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)
+
+item_quantity_spinbox = tkinter.Spinbox(append_print_frame, from_=1, to=500)# Item Quantity Spinbox.
 item_quantity_spinbox.grid(row=2, column=1)
 
 main()
